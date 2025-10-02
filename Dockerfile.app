@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 1. Utiliser une image de base officielle qui contient Python 3.11 et uv
 # cf doc astral : https://docs.astral.sh/uv/guides/integration/docker/#caching
 # En gros c'est plus malin d'utiliser une image préfaite avec python et uv que
@@ -28,3 +29,8 @@ EXPOSE 8001 4201
 
 # 7. Lancer l'application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
+=======
+# Make sure to check bin/run_services.sh, which can be used here
+
+# Do not forget to expose the right ports! (Check the PR_4.md)
+>>>>>>> 237be71 (feat: fastapi)
