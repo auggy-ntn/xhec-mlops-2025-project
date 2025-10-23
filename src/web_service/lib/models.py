@@ -1,11 +1,24 @@
-from pydantic import BaseModel
+from enum import Enum
+
+from pydantic import BaseModel, NonNegativeFloat
+
+
+class SexOptions(str, Enum):
+    MALE = "M"
+    FEMALE = "F"
+    INFANT = "I"
 
 
 class InputData(BaseModel):
-    Feature1: int
-    Feature2: int
-    Feature3: int
+    Sex: SexOptions
+    Length: NonNegativeFloat
+    Diameter: NonNegativeFloat
+    Height: NonNegativeFloat
+    Whole_weight: NonNegativeFloat
+    Shucked_weight: NonNegativeFloat
+    Viscera_weight: NonNegativeFloat
+    Shell_weight: NonNegativeFloat
 
 
 class PredictionOut(BaseModel):
-    age: float
+    age: NonNegativeFloat
