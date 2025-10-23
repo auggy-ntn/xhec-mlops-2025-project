@@ -6,11 +6,14 @@ build-backend = "setuptools.build_meta"
 name = "xhec-mlops-project-student"
 version = "0.0.1"
 authors = [
-  { name = "auggy-ntn", email = "augustin.naton@gmail.com" },
-  { name = "PeretieLouis", email = "lperetie@gmail.com" },
+  { name = "Augustin Naton", email = "augustin.naton@gmail.com" },
+  { name = "Louis Peretie", email = "lperetie@gmail.com" },
+  { name = "Gregoire Bidault", email = "gregoire.bidault@hec.edu"},
+  { name = "Gustave Triomphe", email = "gustave.triomphe@gmail.com"},
+  { name = "Sofia Casalini, email = "sofia.casalini@gmail.com"}
 ] # TODO: add authors here
 description = "X-HEC MLOps Project on Abalone age prediction model"
-requires-python = ">3.10" # TODO: update this version
+requires-python = ">=3.11,<3.12"
 dependencies = [
     "pydantic>=2.12.3",
 ]
