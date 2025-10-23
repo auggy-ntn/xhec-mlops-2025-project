@@ -275,16 +275,16 @@ wheels = [
 
 [[package]]
 name = "databricks-sdk"
-version = "0.69.0"
+version = "0.70.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "google-auth" },
     { name = "protobuf" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/19/ba/1dc248e4cc646a1a29504bcbb910bfb28d3affe58063df622e7e3c5c0634/databricks_sdk-0.69.0.tar.gz", hash = "sha256:5ad7514325d941afe47da4cf8748ba9f7da7250977666c519f534c9f6298d2f5", size = 794676, upload-time = "2025-10-20T11:38:15.004Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0e/c0/7bca00fcf265bc1fc8ac9452f8fc80779ca56225e11ffce5fbbcd1b47e17/databricks_sdk-0.70.0.tar.gz", hash = "sha256:a4e2141972a5aebca7f4cda0a8e7e3ea444d150fea9bb28fcbd1746e62f65735", size = 798157, upload-time = "2025-10-23T13:44:18.217Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b7/73/6f82f2a926a2129f9a08ba550b3f5c837d23156082c8d1f4226801168456/databricks_sdk-0.69.0-py3-none-any.whl", hash = "sha256:f75c37c0da2126d9fec31cefd7b5c5491a7c8b5d62481cd661d3e9f1efec0b1f", size = 749754, upload-time = "2025-10-20T11:38:13.451Z" },
+    { url = "https://files.pythonhosted.org/packages/45/b9/202b3ff6f2c53736aa45b68870da0de1226e1abe15fc3f2222278cb8193c/databricks_sdk-0.70.0-py3-none-any.whl", hash = "sha256:f573d76cd6960d390253929950210145e9175242196c6f192facd8ea00bc91f2", size = 752568, upload-time = "2025-10-23T13:44:16.474Z" },
 ]
 
 [[package]]
@@ -1792,7 +1792,6 @@ name = "xhec-mlops-project-student"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [
-    { name = "ipykernel" },
     { name = "kagglehub" },
     { name = "matplotlib" },
     { name = "mlflow" },
@@ -1806,6 +1805,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "ipykernel" },
     { name = "nbstripout" },
     { name = "pre-commit" },
     { name = "ruff" },
@@ -1813,7 +1813,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ipykernel", specifier = ">=7.0.1" },
     { name = "kagglehub", specifier = ">=0.3.13" },
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "mlflow", specifier = ">=3.5.1" },
@@ -1827,6 +1826,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "ipykernel", specifier = ">=7.0.1" },
     { name = "nbstripout", specifier = ">=0.8.1" },
     { name = "pre-commit", specifier = ">=4.3.0" },
     { name = "ruff", specifier = ">=0.14.1" },

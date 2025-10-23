@@ -1,5 +1,6 @@
-# Data files
-data/
+# Data files - ignore contents but keep directory structure
+data/*
+!data/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -92,5 +93,6 @@ secrets/*
 #mlflow
 mlruns/
 
-# Models
-models/
+# Models - ignore contents but keep directory structure
+models/*
+!models/.gitkeep
