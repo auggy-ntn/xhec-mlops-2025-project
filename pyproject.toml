@@ -10,7 +10,7 @@ authors = [
   { name = "Louis Peretie", email = "lperetie@gmail.com" },
   { name = "Gregoire Bidault", email = "gregoire.bidault@hec.edu"},
   { name = "Gustave Triomphe", email = "gustave.triomphe@gmail.com"},
-  { name = "Sofia Casalini, email = "sofia.casalini@gmail.com"}
+  { name = "Sofia Casalini", email = "sofia.casalini@gmail.com"}
 ] # TODO: add authors here
 description = "X-HEC MLOps Project on Abalone age prediction model"
 requires-python = ">=3.11,<3.12"
