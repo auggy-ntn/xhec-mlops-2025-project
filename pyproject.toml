@@ -11,7 +11,7 @@ authors = [
   { name = "Gregoire Bidault", email = "gregoire.bidault@hec.edu"},
   { name = "Gustave Triomphe", email = "gustave.triomphe@gmail.com"},
   { name = "Sofia Casalini", email = "sofia.casalini@gmail.com"}
-] # TODO: add authors here
+]
 description = "X-HEC MLOps Project on Abalone age prediction model"
 requires-python = ">=3.11,<3.12"
 dependencies = [
@@ -20,6 +20,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "nbstripout>=0.8.1",
     "pre-commit>=4.3.0",
     "ruff>=0.14.1",
 ]
