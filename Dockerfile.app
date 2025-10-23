@@ -16,17 +16,21 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project
 
 # 4. Copier le code source de l'application
-COPY ./src/web_service /app_home/web_service
+COPY ./src /app_home/src
 
 # 5. Installer le projet lui-même
 # Cette couche est rapide car les dépendances sont déjà là.
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
-# 6. Définir le répertoire de travail final et exposer le port
-WORKDIR /app_home/web_service
+# 6. Copier le script de démarrage et le rendre exécutable
+COPY ./bin/run_services.sh /app_home/run_services.sh
+RUN chmod +x /app_home/run_services.sh
+
+# 7. Exposer les ports
 EXPOSE 8001 4201
 
+<<<<<<< HEAD
 # 7. Lancer l'application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
 =======
@@ -34,3 +38,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
 
 # Do not forget to expose the right ports! (Check the PR_4.md)
 >>>>>>> 237be71 (feat: fastapi)
+=======
+# 8. Lancer l'application, et ce pour les deux services mentionnés dans run_services.sh
+CMD ["/app_home/run_services.sh"]
+>>>>>>> ff29a70 (fix: Dockerfile, removed TODO in run_services.sh)
