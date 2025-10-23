@@ -41,3 +41,7 @@ dev = [
     "ruff>=0.14.1",
     "ipykernel>=7.0.1"
 ]
+
+
+[tool.ruff]
+line-length = 88
