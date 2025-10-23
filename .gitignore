@@ -91,3 +91,6 @@ secrets/*
 
 #mlflow
 mlruns/
+
+# Models
+models/
