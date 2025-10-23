@@ -1,22 +1,17 @@
-import os
-import pickle
-from functools import lru_cache
-
-from loguru import logger
+import pickle as pkl
+from pathlib import Path
+from typing import Any
 
 
-@lru_cache
-def load_preprocessor(filepath: os.PathLike):
-    logger.info(f"Loading preprocessor from {filepath}")
-    with open(filepath, "rb") as f:
-        return pickle.load(f)
+def load_from_pickle(file_path: str) -> Any:
+    """Load an object from a specified pickle file.
 
+    Args:
+        file_path (str): The file path from which the object will be loaded.
 
-@lru_cache
-def load_model(filepath: os.PathLike):
-    logger.info(f"Loading model from {filepath}")
-    with open(filepath, "rb") as f:
-        return pickle.load(f)
-
-
-# Utils file. TODO: add a `load_object` function to load pickle objects
+    Returns:
+        Any: The unpickled object.
+    """
+    with Path.open(file_path, "rb") as f:
+        obj = pkl.load(f)
+    return obj
