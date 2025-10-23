@@ -15,7 +15,7 @@ def create_deployment():
     """Create and serve the training pipeline deployment.
 
     This deployment will retrain the model on a schedule.
-    The schedule is set to run daily at 2 AM UTC.
+    The schedule is set to run daily at 1 AM UTC.
     """
     # Create deployment with schedule
     deployment = training_flow.to_deployment(
@@ -23,7 +23,7 @@ def create_deployment():
         version="1.0",
         tags=["production", "ml", "abalone", "training"],
         description="Daily automated training pipeline for Abalone age prediction model",
-        parameters={"trainset_path": DATA_DIR / "abalone.csv"},
+        parameters={"trainset_path": DATA_DIR / "abalone.csv", "stage": "Production"},
         # Schedule: Run daily at 1 AM UTC
         cron="0 1 * * *",
     )
@@ -35,6 +35,6 @@ def create_deployment():
 
 if __name__ == "__main__":
     print("Starting Abalone Training Pipeline Deployment...")
-    print("Schedule: Daily at 2 AM UTC")
+    print("Schedule: Daily at 1 AM UTC")
     print("Press Ctrl+C to stop the deployment")
     create_deployment()
