@@ -1,6 +1,3 @@
-# Code with FastAPI (app = FastAPI(...))
-
-
 from fastapi import FastAPI
 
 from web_service.lib.models import InputData, PredictionOut
@@ -19,3 +16,6 @@ def predict(input: InputData) -> dict:
     ##
     ##
     return {"Predicted age of the abalone"}
+
+
+## TODO
