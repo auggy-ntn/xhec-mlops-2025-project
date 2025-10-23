@@ -31,3 +31,5 @@ EXPOSE 8001 4201
 
 # 8. Lancer l'application, et ce pour les deux services mentionnés dans run_services.sh
 CMD ["/app_home/run_services.sh"]
+# 7. Lancer l'application
+# Make sure to check bin/run_services.sh, which can be used here
