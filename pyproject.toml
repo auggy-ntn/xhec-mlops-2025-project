@@ -31,6 +31,7 @@ dependencies = [
     "scipy>=1.16.2",
     "seaborn>=0.13.2",
     "kagglehub>=0.3.13",
+    "loguru>=0.7.3",
 ]
 
 [dependency-groups]
@@ -40,3 +41,7 @@ dev = [
     "ruff>=0.14.1",
     "ipykernel>=7.0.1"
 ]
+
+
+[tool.ruff]
+line-length = 88
