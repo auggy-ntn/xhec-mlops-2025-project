@@ -6,10 +6,9 @@ from app_config import (
     PATH_TO_SCALER,
 )
 from fastapi import FastAPI
+from lib.modelling import predict
 from lib.models import InputData, PredictionOut
 from utils import load_from_pickle
-
-from modelling.predicting import predict
 
 app = FastAPI(title=APP_TITLE, description=APP_DESCRIPTION, version=APP_VERSION)
 
