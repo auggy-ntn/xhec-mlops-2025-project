@@ -16,12 +16,18 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # 4. Copier le code source de l'application
 COPY ./src /app_home/src
+COPY ./src /app_home/src
 
 # 5. Installer le projet lui-même
 # Cette couche est rapide car les dépendances sont déjà là.
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
+# 6. Copier le script de démarrage et le rendre exécutable
+COPY ./bin/run_services.sh /app_home/run_services.sh
+RUN chmod +x /app_home/run_services.sh
+
+# 7. Exposer les ports
 # 6. Copier le script de démarrage et le rendre exécutable
 COPY ./bin/run_services.sh /app_home/run_services.sh
 RUN chmod +x /app_home/run_services.sh
