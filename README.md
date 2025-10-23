@@ -2,10 +2,18 @@
 
 # MLOps Project: Abalone Age Prediction
 
-[![Python Version](https://img.shields.io/badge/python-3.10%20or%203.11-blue.svg)]()
+[![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)]()
 [![Linting: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-informational?logo=pre-commit&logoColor=white)](https://github.com/artefactory/xhec-mlops-project-student/blob/main/.pre-commit-config.yaml)
 </div>
+
+## 👥 Team Members
+
+- **Augustin Naton** - [@auggy-ntn](https://github.com/auggy-ntn)
+- **Louis Peretie** - [@PeretieLouis](https://github.com/PeretieLouis)
+- **Grégoire Bidault** - [@Gregoire-Bidault](https://github.com/gregoire-bidault)
+- **Gustave Triomphe** - [@gustave-triomphe](https://github.com/gustave-triomphe)
+- **Sofia Casalini** - [@sofiacasalini](https://github.com/sofiacasalini)
 
 ## 🎯 Project Overview
 
@@ -17,7 +25,7 @@ Welcome to your MLOps project! In this hands-on project, you'll build a complete
 
 Traditionally, determining an abalone's age requires:
 1. Cutting the shell through the cone
-2. Staining it 
+2. Staining it
 3. Counting rings under a microscope (very time-consuming!)
 
 **Your Goal**: Use easier-to-obtain physical measurements (shell weight, diameter, etc.) to predict the age automatically.
@@ -30,31 +38,49 @@ Traditionally, determining an abalone's age requires:
 ### Prerequisites
 - GitHub account
 - [Kaggle account](https://www.kaggle.com/account/login?phase=startRegisterTab&returnUrl=%2F) (for dataset download)
-- Python 3.10 or 3.11
+- Python 3.11
+- [uv](https://docs.astral.sh/uv/) package manager
 
 ### Setup Steps
 
-1. **Fork this repository** 
+1. **Fork this repository**
    - ⚠️ **Important**: Uncheck "Copy the `main` branch only" to get all project branches
-   
+
 2. **Add your team members** as admins to your forked repository
 
 3. **Set up your development environment**:
    ```bash
-   # Create and activate a virtual environment
-   uv sync 
-   source venv/bin/activate # on Windows: venv\Scripts\activate
+   # Install uv if you haven't already
+   # On macOS/Linux:
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   # On Windows:
+   # powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+   # Sync dependencies and create virtual environment
+   uv sync
+
+   # Activate the virtual environment
+   source .venv/bin/activate  # on macOS/Linux
+   # .venv\Scripts\activate   # on Windows
 
    # Install pre-commit hooks for code quality
-    uv pip install pre-commit
-    uv run pre-commit install
+   uv run pre-commit install
+   ```
+
+4. **Verify your setup**:
+   ```bash
+   # Check Python version
+   python --version  # Should show Python 3.11.x
+
+   # Test pre-commit hooks
+   uv run pre-commit run --all-files
    ```
 
 ## 📋 What You'll Build
 
 By the end of this project, you'll have created:
 
-### 🤖 **Automated ML Pipeline** 
+### 🤖 **Automated ML Pipeline**
 - Training workflows using Prefect
 - Automatic model retraining on schedule
 - Reproducible model and data processing
@@ -67,7 +93,7 @@ By the end of this project, you'll have created:
 ### 📊 **Production-Ready Code**
 - Clean, well-documented code
 - Automated testing and formatting
-- Proper error handling 
+- Proper error handling
 
 ## 📝 How to Work on This Project
 
@@ -102,7 +128,7 @@ git push
 
 Then:
 1. 📖 Read the PR_i.md file carefully
-2. 💻 Complete all the TODOs in the code  
+2. 💻 Complete all the TODOs in the code
 3. 🔧 Test your changes
 4. 📤 Open **ONE** pull request to your main branch
 5. ✅ Merge the pull request
@@ -126,37 +152,78 @@ Pull Requests (PRs) are how you propose and review changes before merging them i
 
 ### Managing Dependencies
 
-Use uv to manage dependencies. Install or update packages with:
+This project uses [uv](https://docs.astral.sh/uv/) for fast, reliable dependency management.
+
+**Adding new dependencies:**
 
 ```bash
+# Add a production dependency
+uv add <package>
+
+# Add a development dependency
+uv add --dev <package>
+
+# Add a specific version
 uv add <package>==<version>
 ```
 
-Then sync the environment and regenerate the dependency files:
+**Syncing dependencies:**
+
+After pulling changes or modifying dependencies, sync your environment:
 
 ```bash
 uv sync
 ```
 
+**Important**: The `uv.lock` file is tracked in git to ensure reproducible builds across all team members.
+
 ### Code Quality
-- The pre-commit hooks will automatically format your code
+
+This project uses automated code quality tools:
+
+- **ruff**: Fast Python linter and formatter
+- **pre-commit**: Runs checks automatically before each commit
+- **nbstripout**: Strips output from Jupyter notebooks before committing
+
+The pre-commit hooks will automatically:
+- Format your code with ruff
+- Check for linting issues
+- Sort imports
+- Strip notebook outputs
+- Validate YAML, TOML, and JSON files
+
+**Manual checks:**
+
+```bash
+# Run all pre-commit hooks manually
+uv run pre-commit run --all-files
+
+# Format code with ruff
+uv run ruff format .
+
+# Check for linting issues
+uv run ruff check .
+```
+
+**Best practices:**
 - Remove all TODOs and unused code before final submission
 - Use clear variable names and add docstrings
+- Write type hints for function parameters and return values
 
 ## 📊 Evaluation Criteria
 
 Your project will be evaluated on:
 
-### 🔍 **Code Quality** 
+### 🔍 **Code Quality**
 - Clean, readable code structure
-- Proper naming conventions  
+- Proper naming conventions
 - Good use of docstrings and type hints
 
 ### 🎨 **Code Formatting**
 - Consistent style (automated with pre-commit)
 - Professional presentation
 
-### ⚙️ **Functionality** 
+### ⚙️ **Functionality**
 - Code runs without errors
 - All requirements implemented correctly
 
@@ -177,10 +244,10 @@ When you're done, your repository should contain:
 
 ✅ **Automated Training Pipeline**
 - [ ] Prefect workflows for model training
-- [ ] Separate modules for training and inference  
+- [ ] Separate modules for training and inference
 - [ ] Reproducible model and encoder generation
 
-✅ **Automated Deployment**  
+✅ **Automated Deployment**
 - [ ] Prefect deployment for regular retraining
 
 ✅ **Production API**
