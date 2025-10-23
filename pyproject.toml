@@ -7,6 +7,7 @@ name = "xhec-mlops-project-student"
 version = "0.0.1"
 authors = [
   { name = "auggy-ntn", email = "augustin.naton@gmail.com" },
+  { name = "PeretieLouis", email = "lperetie@gmail.com" },
 ] # TODO: add authors here
 description = "X-HEC MLOps Project on Abalone age prediction model"
 requires-python = ">3.10" # TODO: update this version
