@@ -1,7 +1,10 @@
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 # MODELS
 MODEL_VERSION = "0.0.1"
-PATH_TO_SCALER = "web_service/local_objects/scaler.pkl"
-PATH_TO_MODEL = "web_serice/local_objects/model.pkl"
+MODELS_DIR = PROJECT_ROOT / "src" / "web_service" / "local_objects"
 
 
 # MISC

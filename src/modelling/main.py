@@ -55,13 +55,15 @@ def main(
 
         # Preprocess data
         logger.info("Preprocessing data")
-        x, y, scaler = preprocess_data(df)
+        x, y, preprocessor = preprocess_data(df)
 
-        # (Optional) Pickle encoder if need be
-        logger.info("Saving scaler to src/web_service/local_objects/scaler.pkl")
-        save_to_pickle(scaler, "src/web_service/local_objects/scaler.pkl")
-        mlflow.sklearn.log_model(scaler, "scaler")
-        logger.info("Scaler logged to MLflow")
+        # Save preprocessor
+        logger.info(
+            "Saving preprocessor to src/web_service/local_objects/preprocessor.pkl"
+        )
+        save_to_pickle(preprocessor, "src/web_service/local_objects/preprocessor.pkl")
+        mlflow.sklearn.log_model(preprocessor, "preprocessor")
+        logger.info("Preprocessor logged to MLflow")
 
         # Train model
         logger.info("Training model")

@@ -220,7 +220,8 @@ Before running any workflows, start the Prefect server:
 
 ```bash
 # Set the Prefect API URL (first time only)
-uv run prefect config set PREFECT_API_URL=http://0.0.0.0:4200/api
+# Note: Use 127.0.0.1 (not 0.0.0.0) so the UI works from both localhost and 127.0.0.1
+uv run prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
 
 # Verify SQLite is installed (required for Prefect backend)
 sqlite3 --version
@@ -229,7 +230,7 @@ sqlite3 --version
 uv run prefect server start --host 0.0.0.0
 ```
 
-**Access the Prefect UI**: http://0.0.0.0:4200
+**Access the Prefect UI**: http://localhost:4200 or http://127.0.0.1:4200
 
 Keep this terminal running while you work with Prefect!
 
@@ -251,7 +252,7 @@ This will:
 - Train the model
 - Save the model and scaler to `src/web_service/local_objects/`
 
-**View the flow run** in the Prefect UI at http://0.0.0.0:4200/runs
+**View the flow run** in the Prefect UI at http://localhost:4200/runs
 
 ### Creating Automated Deployments
 
@@ -268,7 +269,7 @@ This creates a deployment that:
 - Provides full observability of each training run
 
 **Managing deployments:**
-- View deployments: http://0.0.0.0:4200/deployments
+- View deployments: http://localhost:4200/deployments
 - Click "Quick Run" to trigger an immediate training run
 - Toggle the schedule on/off
 - View deployment history and logs

@@ -1,16 +1,22 @@
-from app_config import (
+import pandas as pd
+from fastapi import FastAPI
+from loguru import logger
+
+from src.modelling.predicting import predict
+from src.modelling.utils import load_from_pickle
+from src.web_service.app_config import (
     APP_DESCRIPTION,
     APP_TITLE,
     APP_VERSION,
-    PATH_TO_MODEL,
-    PATH_TO_SCALER,
+    MODELS_DIR,
 )
-from fastapi import FastAPI
-from lib.modelling import predict
-from lib.models import InputData, PredictionOut
-from utils import load_from_pickle
+from src.web_service.lib.models import InputData, PredictionOut
 
-app = FastAPI(title=APP_TITLE, description=APP_DESCRIPTION, version=APP_VERSION)
+app = FastAPI(
+    title=APP_TITLE,
+    description=APP_DESCRIPTION,
+    version=APP_VERSION,
+)
 
 
 @app.get("/")
@@ -19,9 +25,32 @@ def home() -> dict:
 
 
 @app.post("/predict", response_model=PredictionOut, status_code=201)
-def predictions(input: InputData) -> dict:
-    scaler = load_from_pickle(PATH_TO_SCALER)
-    model = load_from_pickle(PATH_TO_MODEL)
-    input_data = scaler.transform([input.values()])
-    prediction = predict(model, input_data)
-    return {f"Predicted age of the abalone:{prediction[0]}"}
+def predictions(input: InputData) -> PredictionOut:
+    """Make predictions based on input data
+
+    Args:
+        input (InputData): The input data for making predictions.
+
+    Returns:
+        dict: The prediction results.
+    """
+    logger.info(f"Received input for prediction: {input}")
+
+    logger.info(f"Loading preprocessor from {MODELS_DIR / 'preprocessor.pkl'}")
+    preprocessor = load_from_pickle(MODELS_DIR / "preprocessor.pkl")
+
+    logger.info(f"Loading model from {MODELS_DIR / 'model.pkl'}")
+    model = load_from_pickle(MODELS_DIR / "model.pkl")
+
+    logger.info("Preprocessing input data")
+    # Convert Pydantic model to DataFrame
+    input_dict = input.model_dump()
+    input_df = pd.DataFrame([input_dict])
+
+    # Apply preprocessing
+    input_processed = preprocessor.transform(input_df)
+
+    logger.info("Making prediction")
+    prediction = predict(model, input_processed)
+    logger.info(f"Prediction made: {prediction[0]}")
+    return PredictionOut(age=prediction[0])
