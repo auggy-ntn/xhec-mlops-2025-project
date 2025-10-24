@@ -1,35 +1,32 @@
-# 1. Utiliser une image de base officielle qui contient Python 3.11 et uv
-# cf doc astral : https://docs.astral.sh/uv/guides/integration/docker/#caching
-# En gros c'est plus malin d'utiliser une image préfaite avec python et uv que
-# de tout recréer from scratch.
-FROM ghcr.io/astral-sh/uv:python3.11-slim-bookworm
+# 1. Use an official base image containing Python and uv
+# see doc astral : https://docs.astral.sh/uv/guides/integration/docker/#caching
+FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim
 
 WORKDIR /app_home
 
-# 2. Copier uniquement les fichiers de dépendances
+# 2. Copy only the dependency files first
 COPY pyproject.toml uv.lock /app_home/
 
-# 3. Installer les dépendances (sans le projet)
-# Ceci crée une couche Docker "lente" qui change rarement.
+# 3. Install dependencies (without the project)
+# This layer is cached unless pyproject.toml or uv.lock change.
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project
 
-# 4. Copier le code source de l'application
+# 4. Copy the application source code
 COPY ./src /app_home/src
 
-# 5. Installer le projet lui-même
-# Cette couche est rapide car les dépendances sont déjà là.
+# 5. Install the project itself
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
-# 6. Copier le script de démarrage et le rendre exécutable
+# 6. Copy the startup script and make it executable
 COPY ./bin/run_services.sh /app_home/run_services.sh
 RUN chmod +x /app_home/run_services.sh
 
-# 7. Exposer les ports
-EXPOSE 8001 4201
+# 7. Expose the port that the FastAPI app will run on
+EXPOSE 8001
 
-# 8. Lancer l'application, et ce pour les deux services mentionnés dans run_services.sh
+# 8. Start the application, and this for the two services mentioned in run_services.sh
 CMD ["/app_home/run_services.sh"]
 # 7. Lancer l'application
 # Make sure to check bin/run_services.sh, which can be used here
