@@ -37,12 +37,10 @@ def predictions(input: InputData) -> PredictionOut:
     logger.info(f"Received input for prediction: {input}")
 
     logger.info(f"Loading preprocessor from {MODELS_DIR / 'preprocessor.pkl'}")
-    preprocessor = load_from_pickle.fn(
-        MODELS_DIR / "preprocessor.pkl"
-    )  # fn to not call the Prefect task, just the function
+    preprocessor = load_from_pickle(MODELS_DIR / "preprocessor.pkl")
 
     logger.info(f"Loading model from {MODELS_DIR / 'model.pkl'}")
-    model = load_from_pickle.fn(MODELS_DIR / "model.pkl")
+    model = load_from_pickle(MODELS_DIR / "model.pkl")
 
     logger.info("Preprocessing input data")
     # Convert Pydantic model to DataFrame
@@ -53,6 +51,6 @@ def predictions(input: InputData) -> PredictionOut:
     input_processed = preprocessor.transform(input_df)
 
     logger.info("Making prediction")
-    prediction = predict.fn(model, input_processed)
+    prediction = predict(model, input_processed)
     logger.info(f"Prediction made: {prediction[0]}")
     return PredictionOut(age=prediction[0])
