@@ -107,5 +107,6 @@ if __name__ == "__main__":
         description="Train a model using the data at the given path."
     )
     parser.add_argument("trainset_path", type=str, help="Path to the training set")
+    parser.add_argument("stage", type=str, help="Stage to register the model under")
     args = parser.parse_args()
-    main(Path(args.trainset_path))
+    main(Path(args.trainset_path), args.stage)

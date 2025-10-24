@@ -351,3 +351,30 @@ When you're done, your repository should contain:
 ---
 
 **Ready to start? Head to branch_0 and read PR_0.md for your first task! 🚀**
+
+## MLFlow
+WIP (Explain how to set up and access the MLFlow UI on local)
+
+## Prefect
+WIP (Explain how to set up and access the Prefect UI on local)
+
+## Running the API
+To run the containerized API, follow these steps:
+- Run once the training workflow pipeline (should have been done if previous steps are completed) directly from the Prefect UI, orwith the following command (make sure you are in the project's root, `xhec-mlops-2025-project` when running the command):
+  ```zsh
+   uv run prefect server start # If you don't already have a prefect server running
+  ```
+  ```zsh
+   uv run python -m src.modelling.main data/abalone.csv Production
+  ```
+  This ensures that you locally have the pickle model and preprocessor, which will be needed when building the container.
+
+- Build the Docker container:
+  ```zsh
+   docker build -t abalone-age-prediction-tool -f Dockerfile.app .
+  ```
+- Run the Docker container:
+  ```zsh
+   docker run --rm -p 8001:8001 abalone-age-prediction-tool
+  ```
+- Connect to the FastApi UI in your browser at http://localhost:8001
