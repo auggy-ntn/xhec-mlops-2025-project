@@ -264,7 +264,7 @@ uv run python -m src.modelling.deploy
 ```
 
 This creates a deployment that:
-- Runs the training pipeline daily at 2 AM UTC
+- Runs the training pipeline daily at 1 AM UTC
 - Can be manually triggered from the UI
 - Provides full observability of each training run
 
