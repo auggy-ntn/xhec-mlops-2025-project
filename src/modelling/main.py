@@ -1,6 +1,7 @@
 # This module is the training flow: it reads the data, preprocesses it, trains a model and saves it.
 
 import argparse
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -33,8 +34,9 @@ def main(
     date = datetime.now().strftime("%Y-%m-%d")
     time = datetime.now().strftime("%H:%M:%S")
 
-    # Set MLflow tracking URI to src/mlruns directory
-    mlflow.set_tracking_uri("file:./src/mlruns")
+    # Set MLflow tracking URI - use environment variable if set, otherwise use default
+    tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "file:./src/mlruns")
+    mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment("Abalone Age Prediction Model Training")
 
     with mlflow.start_run() as run:

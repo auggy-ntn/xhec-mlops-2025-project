@@ -1,0 +1,37 @@
+# 1. Use an official base image containing Python and uv
+# see doc astral : https://docs.astral.sh/uv/guides/integration/docker/#caching
+FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim
+
+WORKDIR /app
+
+# 2. Copy only the dependency files first
+COPY pyproject.toml uv.lock /app/
+
+# 3. Install dependencies (without the project)
+# This layer is cached unless pyproject.toml or uv.lock change.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project
+
+# 4. Copy the initial data for mlruns, models, and data
+COPY ./data /seed/data
+COPY ./src/web_service/local_objects /seed/models
+COPY ./src/mlruns /seed/mlruns
+
+# 5. Copy the application source code
+COPY ./src /app/src
+
+# 6. Install the project itself
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked
+
+# 7. Copy the startup script and make it executable
+COPY ./bin/run_backend_service.sh /app/run_backend_service.sh
+RUN chmod +x /app/run_backend_service.sh
+COPY ./bin/init_data.sh /app/init_data.sh
+RUN chmod +x /app/init_data.sh
+
+# 8. Expose the port that the Prefect and MLflow servers will run on
+EXPOSE 4200 5000
+
+# 9. Start the application, and this for the two services mentioned in run_services.sh
+CMD ["/app/run_backend_service.sh"]

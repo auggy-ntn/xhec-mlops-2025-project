@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Data Initialization Service
+  init-data:
+    image: augustinnaton/abalone-backend:latest
+    volumes:
+      - mlruns:/app/mlruns
+      - models:/app/models
+      - data:/app/data
+    command: /app/init_data.sh
+  # MLflow + Prefect Backend
+  ml-backend:
+    image: augustinnaton/abalone-backend:latest
+    depends_on:
+      init-data:
+        condition: service_completed_successfully
+    ports:
+      - "4200:4200"  # Prefect UI
+      - "5000:5000"  # MLflow UI
+    volumes:
+      - mlruns:/app/mlruns
+      - models:/app/models
+      - data:/app/data
+    environment:
+      - PREFECT_API_URL=http://0.0.0.0:4200/api
+      - MLFLOW_TRACKING_URI=file:///app/mlruns
+    command: /app/run_backend_service.sh
+
+  # API Service
+  api:
+    image: augustinnaton/abalone-api:latest
+    depends_on:
+      - ml-backend
+    ports:
+      - "8001:8001"  # API endpoint
+    volumes:
+      - models:/app/models
+    environment:
+      - MODEL_PATH=/app/models/model.pkl
+      - SCALER_PATH=/app/models/scaler.pkl
+    command: /app/run_api_service.sh
+
+volumes:
+  mlruns:
+  models:
+  data:
