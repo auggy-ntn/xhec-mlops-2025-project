@@ -15,10 +15,6 @@ This comprehensive guide covers the complete setup, structure, and deployment of
 2. [Environment Setup](#-environment-setup)
 3. [Local Development](#-local-development)
 4. [Docker Compose Deployment](#-docker-compose-deployment)
-5. [MLFlow UI](#-mlflow-ui)
-6. [Prefect UI](#-prefect-ui)
-7. [API Usage](#-api-usage)
-8. [Troubleshooting](#-troubleshooting)
 
 ---
 
