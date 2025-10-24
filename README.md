@@ -1,11 +1,17 @@
 <div align="center">
 
-# MLOps Project: Abalone Age Prediction
+# 🚀 Complete Setup Guide
+## Abalone Age Prediction MLOps Project
 
 [![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)]()
 [![Linting: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-informational?logo=pre-commit&logoColor=white)](https://github.com/artefactory/xhec-mlops-project-student/blob/main/.pre-commit-config.yaml)
+
 </div>
+
+This comprehensive guide covers the complete setup, structure, and deployment of the Abalone Age Prediction MLOps project.
+
+---
 
 ## 👥 Team Members
 
@@ -15,375 +21,270 @@
 - **Gustave Triomphe** - [@gustave-triomphe](https://github.com/gustave-triomphe)
 - **Sofia Casalini** - [@sofiacasalini](https://github.com/sofiacasalini)
 
-## 🎯 Project Overview
+## 📋 Table of Contents
 
-Welcome to your MLOps project! In this hands-on project, you'll build a complete machine learning system to predict the age of abalone (a type of sea snail) using physical measurements instead of the traditional time-consuming method of counting shell rings under a microscope.
+1. [Project Structure](#-project-structure)
+2. [Environment Setup](#-environment-setup)
+3. [Local Development](#-local-development)
+4. [Docker Compose Deployment](#-docker-compose-deployment)
 
-**Your Mission**: Transform a simple ML model into a production-ready system with automated training, deployment, and prediction capabilities.
+---
 
-## 📊 About the Dataset
+## 📁 Project Structure
 
-Traditionally, determining an abalone's age requires:
-1. Cutting the shell through the cone
-2. Staining it
-3. Counting rings under a microscope (very time-consuming!)
+```
+xhec-mlops-2025-project/
+├── src/
+│   ├── modelling/              # ML Pipeline code
+│   │   ├── main.py            # Entry point for training pipeline
+│   │   ├── deploy.py          # Prefect deployment configuration
+│   │   ├── training.py        # Model training logic
+│   │   ├── preprocessing.py   # Data preprocessing
+│   │   ├── predicting.py      # Prediction logic
+│   │   ├── utils.py           # Utility functions
+│   │   └── config.py          # Configuration settings
+│   ├── web_service/           # FastAPI application
+│   │   ├── main.py           # FastAPI endpoints
+│   │   ├── app_config.py     # API configuration
+│   │   ├── lib/
+│   │   │   └── models.py     # Pydantic models for API
+│   │   └── local_objects/    # Stored models and preprocessors
+│   └── mlruns/               # MLFlow experiment tracking
+├── data/
+│   └── abalone.csv           # Training dataset
+├── notebooks/
+│   ├── eda.ipynb            # Exploratory Data Analysis
+│   ├── modelling.ipynb      # Model development
+│   └── mlruns/              # Notebook experiments tracking
+├── bin/
+│   ├── run_api_service.sh    # API startup script
+│   ├── run_backend_service.sh # Backend services startup
+│   └── init_data.sh          # Data initialization script
+├── docker-compose.yml         # Multi-service orchestration
+├── Dockerfile.api             # API service container
+├── Dockerfile.backend         # Backend services container
+├── pyproject.toml            # Project dependencies and metadata
+└── README.md                 # Project documentation
+```
 
-**Your Goal**: Use easier-to-obtain physical measurements (shell weight, diameter, etc.) to predict the age automatically.
+### Key Components
 
-📥 **Download**: Get the dataset from the [Kaggle page](https://www.kaggle.com/datasets/rodolfomendes/abalone-dataset)
+- **`src/modelling/`**: Contains the complete ML pipeline orchestrated by Prefect
+- **`src/web_service/`**: FastAPI application for serving predictions
+- **`bin/`**: Shell scripts for running services in Docker containers
+- **`data/`**: Dataset storage
+- **`notebooks/`**: Jupyter notebooks for experimentation
+- **Docker files**: Containerization configuration for deployment
 
+---
 
-## 🚀 Quick Start
+## 🛠️ Environment Setup (for local development)
 
 ### Prerequisites
-- GitHub account
-- [Kaggle account](https://www.kaggle.com/account/login?phase=startRegisterTab&returnUrl=%2F) (for dataset download)
-- Python 3.11
-- [uv](https://docs.astral.sh/uv/) package manager
 
-### Setup Steps
+Before starting, ensure you have:
 
-1. **Fork this repository**
-   - ⚠️ **Important**: Uncheck "Copy the `main` branch only" to get all project branches
+- **Python 3.11** (strictly required)
+- **[uv](https://docs.astral.sh/uv/)** package manager
+- **Docker** and **Docker Compose** (for containerized deployment)
+- **Git** for version control
+- **SQLite** (required for Prefect backend)
 
-2. **Add your team members** as admins to your forked repository
+### Installing uv
 
-3. **Set up your development environment**:
-   ```bash
-   # Install uv if you haven't already
-   # On macOS/Linux:
-   curl -LsSf https://astral.sh/uv/install.sh | sh
-   # On Windows:
-   # powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```zsh
+# On macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+For Windows, see the [uv documentation](https://docs.astral.sh/uv/getting-started/installation/).
 
-   # Sync dependencies and create virtual environment
-   uv sync
+### Initial Setup
 
-   # Activate the virtual environment
-   source .venv/bin/activate  # on macOS/Linux
-   # .venv\Scripts\activate   # on Windows
+1. **Clone the repository**:
+   ```zsh
+   git clone git@github.com:auggy-ntn/xhec-mlops-2025-project.git
+   ```
 
-   # Install pre-commit hooks for code quality
+2. **Install dependencies and create virtual environment**:
+   ```zsh
+   # This creates a .venv directory and installs all dependencies (including dev dependencies)
+   uv sync --all-groups
+   ```
+
+3. **Install pre-commit hooks** (for code quality):
+   ```zsh
    uv run pre-commit install
    ```
 
-4. **Verify your setup**:
-   ```bash
-   # Check Python version
-   python --version  # Should show Python 3.11.x
+### Dependencies Overview
 
-   # Test pre-commit hooks
-   uv run pre-commit run --all-files
-   ```
+The project uses the following key dependencies (defined in `pyproject.toml`):
 
-## 📋 What You'll Build
+**Production Dependencies:**
+- `mlflow>=3.5.1` - Experiment tracking and model registry
+- `prefect>=3.0.0` - Workflow orchestration
+- `fastapi` - REST API framework
+- `scikit-learn>=1.7.2` - Machine learning library
+- `pandas>=2.3.3` - Data manipulation
+- `pydantic>=2.12.3` - Data validation
+- `loguru>=0.7.3` - Logging
 
-By the end of this project, you'll have created:
+**Development Dependencies:**
+- `ruff>=0.14.1` - Fast Python linter and formatter
+- `pre-commit>=4.3.0` - Git hook management
+- `nbstripout>=0.8.1` - Strip Jupyter notebook outputs
+- `ipykernel>=7.0.1` - Jupyter kernel
 
-### 🤖 **Automated ML Pipeline**
-- Training workflows using Prefect
-- Automatic model retraining on schedule
-- Reproducible model and data processing
+---
 
-### 🌐 **Prediction API**
-- REST API for real-time predictions
-- Input validation with Pydantic
-- Docker containerization
+## 💻 Local Development
 
-### 📊 **Production-Ready Code**
-- Clean, well-documented code
-- Automated testing and formatting
-- Proper error handling
+### Running the Complete Pipeline Locally
 
-## 📝 How to Work on This Project
+To run the project locally without Docker, you need to start multiple services.
 
-### The Branch-by-Branch Approach
+#### Step 0: Download the data
+From [the Kaggle challenge](https://www.kaggle.com/datasets/rodolfomendes/abalone-dataset), download the dataset and place it in the ```data/``` directory located at the project's root. Name it ```abalone.csv```.
 
-This project is organized into numbered branches, each representing a step in building your MLOps system. Think of it like a guided tutorial where each branch teaches you something new!
+#### Step 1: Start Prefect Server
 
-**Here's how it works**:
+In **Terminal 1**, start the Prefect server:
 
-1. **Each branch = One pull request** with specific tasks
-2. **Follow the numbers** (branch_0, branch_1, etc.) in order
-3. **Read the PR instructions** (PR_0.md, PR_1.md, etc.) before starting
-4. **Complete all TODOs** in that branch's code
-5. **Create a pull request** when done
-6. **Merge and move to the next branch**
+```zsh
+# Configure Prefect API URL (first time only)
+uv run prefect config set PREFECT_API_URL=http://0.0.0.0:4200/api
 
-### Step-by-Step Workflow
-
-For each numbered branch:
-
-```bash
-# Switch to the branch
-git checkout branch_number_i
-
-# Get latest changes (except for branch_1)
-git pull origin main
-# Note: A VIM window might open - just type ":wq" to close it
-
-# Push your branch
-git push
-```
-
-Then:
-1. 📖 Read the PR_i.md file carefully
-2. 💻 Complete all the TODOs in the code
-3. 🔧 Test your changes
-4. 📤 Open **ONE** pull request to your main branch
-5. ✅ Merge the pull request
-6. 🔄 Move to the next branch
-
-> **💡 Pro Tip**: Always integrate your previous work when starting a new branch (except branch_1)!
-
-### 🔍 Understanding Pull Requests
-
-Pull Requests (PRs) are how you propose and review changes before merging them into your main codebase. They're essential for team collaboration!
-
-**Important**: When creating a PR, make sure you're merging into YOUR forked repository, not the original:
-
-❌ **Wrong** (merging to original repo):
-![PR Wrong](assets/PR_wrong.png)
-
-✅ **Correct** (merging to your fork):
-![PR Right](assets/PR_right.png)
-
-## 💡 Development Tips
-
-### Managing Dependencies
-
-This project uses [uv](https://docs.astral.sh/uv/) for fast, reliable dependency management.
-
-**Adding new dependencies:**
-
-```bash
-# Add a production dependency
-uv add <package>
-
-# Add a development dependency
-uv add --dev <package>
-
-# Add a specific version
-uv add <package>==<version>
-```
-
-**Syncing dependencies:**
-
-After pulling changes or modifying dependencies, sync your environment:
-
-```bash
-uv sync
-```
-
-**Important**: The `uv.lock` file is tracked in git to ensure reproducible builds across all team members.
-
-### Code Quality
-
-This project uses automated code quality tools:
-
-- **ruff**: Fast Python linter and formatter
-- **pre-commit**: Runs checks automatically before each commit
-- **nbstripout**: Strips output from Jupyter notebooks before committing
-
-The pre-commit hooks will automatically:
-- Format your code with ruff
-- Check for linting issues
-- Sort imports
-- Strip notebook outputs
-- Validate YAML, TOML, and JSON files
-
-**Manual checks:**
-
-```bash
-# Run all pre-commit hooks manually
-uv run pre-commit run --all-files
-
-# Format code with ruff
-uv run ruff format .
-
-# Check for linting issues
-uv run ruff check .
-```
-
-**Best practices:**
-- Remove all TODOs and unused code before final submission
-- Use clear variable names and add docstrings
-- Write type hints for function parameters and return values
-
-## � Running the ML Pipeline with Prefect
-
-This project uses [Prefect](https://www.prefect.io/) for ML workflow orchestration, providing observability, scheduling, and automated retraining capabilities.
-
-### Starting the Prefect Server
-
-Before running any workflows, start the Prefect server:
-
-```bash
-# Set the Prefect API URL (first time only)
-# Note: Use 127.0.0.1 (not 0.0.0.0) so the UI works from both localhost and 127.0.0.1
-uv run prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
-
-# Verify SQLite is installed (required for Prefect backend)
-sqlite3 --version
-
-# Start the Prefect server
+# Start Prefect server
 uv run prefect server start --host 0.0.0.0
 ```
 
-**Access the Prefect UI**: http://localhost:4200 or http://127.0.0.1:4200
+**Access Prefect UI**: http://0.0.0.0:4200
 
-Keep this terminal running while you work with Prefect!
+Keep this terminal running!
 
-### Running the Training Pipeline
+#### Step 2: Start MLFlow UI
 
-In a **new terminal**, run the training workflow:
+In **Terminal 2**, start the MLFlow tracking UI:
 
-```bash
-# Activate virtual environment
-source .venv/bin/activate  # on macOS/Linux
-# .venv\Scripts\activate   # on Windows
+```zsh
+# Start MLFlow UI pointing to the src/mlruns directory
+uv run mlflow ui --backend-store-uri ./src/mlruns --host 0.0.0.0 --port 5002
+```
 
-# Run the training pipeline
-uv run python -m src.modelling.main data/abalone.csv
+**Access MLFlow UI**: http://localhost:5002
+
+Keep this terminal running!
+
+#### Step 3: Run Training Pipeline
+
+In **Terminal 3**, run the training workflow:
+
+```zsh
+# Run training pipeline with Production stage
+uv run python -m src.modelling.main data/abalone.csv Production
 ```
 
 This will:
-- Load and preprocess the data
-- Train the model
-- Save the model and scaler to `src/web_service/local_objects/`
+- Load and preprocess the `abalone.csv` dataset
+- Train a machine learning model
+- Log metrics and parameters to MLFlow
+- Save the model and preprocessor to `src/web_service/local_objects/`
+- Register the model in MLFlow with "Production" stage
 
-**View the flow run** in the Prefect UI at http://localhost:4200/runs
+#### Step 4: Create Automated Deployment
 
-### Creating Automated Deployments
+In **Terminal 4** (optional), set up scheduled retraining:
 
-To set up automated retraining on a schedule:
-
-```bash
-# Run the deployment script (keeps running)
+```zsh
+# Run deployment script
 uv run python -m src.modelling.deploy
 ```
 
-This creates a deployment that:
-- Runs the training pipeline daily at 1 AM UTC
-- Can be manually triggered from the UI
-- Provides full observability of each training run
+This creates a Prefect deployment that:
+- Runs daily at 1 AM UTC
+- Can be manually triggered from Prefect UI
+- Automatically retrains the model
 
-**Managing deployments:**
-- View deployments: http://localhost:4200/deployments
-- Click "Quick Run" to trigger an immediate training run
-- Toggle the schedule on/off
-- View deployment history and logs
+#### Step 5: Start the API
 
-**To stop the deployment**: Press `Ctrl+C` in the terminal running the deployment
+In **Terminal 5**, run the FastAPI application:
 
-### Prefect UI Features
-
-The Prefect dashboard provides:
-- **Flow Runs**: View all pipeline executions with status and logs
-- **Deployments**: Manage scheduled training runs
-- **Work Queues**: Monitor task execution
-- **Flow Run Graph**: Visualize task dependencies and execution flow
-- **Logs**: Detailed execution logs for debugging
-
-**Useful commands:**
-
-```bash
-# Reset the Prefect database (if needed)
-uv run prefect server database reset
-
-# View deployments via CLI
-uv run prefect deployment ls
-
-# View flow runs via CLI
-uv run prefect flow-run ls
+```zsh
+# Start FastAPI server
+uv run uvicorn src.web_service.main:app --host 0.0.0.0 --port 8001 --reload
 ```
 
-## �📊 Evaluation Criteria
+**Access API Documentation**: http://localhost:8001/docs
 
-Your project will be evaluated on:
+### Local Development URLs
 
-### 🔍 **Code Quality**
-- Clean, readable code structure
-- Proper naming conventions
-- Good use of docstrings and type hints
-
-### 🎨 **Code Formatting**
-- Consistent style (automated with pre-commit)
-- Professional presentation
-
-### ⚙️ **Functionality**
-- Code runs without errors
-- All requirements implemented correctly
-
-### 📖 **Documentation & Reproducibility**
-- Clear README with setup instructions
-- Team member names and GitHub usernames
-- Step-by-step instructions to run everything
-
-### 🤝 **Collaboration**
-- Effective use of Pull Requests
-- Good teamwork and communication
+| Service | URL | Purpose |
+|---------|-----|---------|
+| Prefect UI | http://0.0.0.0:4200 | Workflow orchestration, monitoring, scheduling |
+| MLFlow UI | http://localhost:5002 | Experiment tracking, model registry |
+| FastAPI Docs | http://localhost:8001/docs | Interactive API documentation |
+| API Root | http://localhost:8001 | Health check endpoint |
 
 ---
 
-## 🎯 Final Deliverables Checklist
+## 🐳 Docker Compose Deployment
 
-When you're done, your repository should contain:
+The easiest way to run the entire application is using Docker Compose, which orchestrates all services automatically.
 
-✅ **Automated Training Pipeline**
-- [ ] Prefect workflows for model training
-- [ ] Separate modules for training and inference
-- [ ] Reproducible model and encoder generation
+### Architecture Overview
 
-✅ **Automated Deployment**
-- [ ] Prefect deployment for regular retraining
+The `docker-compose.yml` defines three services:
 
-✅ **Production API**
-- [ ] Working REST API for predictions
-- [ ] Pydantic input validation
-- [ ] Docker containerization
+1. **init-data**: Initializes shared volumes with data, models, and MLFlow runs
+2. **ml-backend**: Runs Prefect + MLFlow servers
+3. **api**: Serves the FastAPI prediction endpoint
 
-✅ **Professional Documentation**
-- [ ] Updated README with team info
-- [ ] Clear setup and run instructions
-- [ ] All TODOs removed from code
+### Prerequisites for Docker Deployment
 
----
+1. **Docker and Docker Compose installed**:
+   ```zsh
+   docker --version
+   ```
 
-**Ready to start? Head to branch_0 and read PR_0.md for your first task! 🚀**
+### Deploying with Docker Compose
 
-## MLFlow
-WIP (Explain how to set up and access the MLFlow UI on local)
+The simplest approach uses images already pushed to DockerHub:
 
-## Prefect
-WIP (Explain how to set up and access the Prefect UI on local)
-
-## Running the API
-To run the containerized API, follow these steps:
-- Run once the training workflow pipeline (should have been done if previous steps are completed) directly from the Prefect UI, orwith the following command (make sure you are in the project's root, `xhec-mlops-2025-project` when running the command):
-  ```zsh
-   uv run prefect server start # If you don't already have a prefect server running
-  ```
-  ```zsh
-   uv run python -m src.modelling.main data/abalone.csv Production
-  ```
-  This ensures that you locally have the pickle model and preprocessor, which will be needed when building the container.
-
-- Build the Docker container:
-  ```zsh
-   docker build -t abalone-age-prediction-tool -f Dockerfile.app .
-  ```
-- Run the Docker container:
-  ```zsh
-   docker run --rm -p 8001:8001 abalone-age-prediction-tool
-  ```
-- Connect to the FastApi UI in your browser at http://localhost:8001
-
-Alternatively, you can simply pull the latest image from DockerHub:
 ```zsh
-docker pull augustinnaton/abalone-age-prediction-tool
+# From project root
+docker compose up -d    # (remove the -d flag if you want to see terminal outputs)
 ```
-After this, simply run the image:
+
+This will:
+- Pull `augustinnaton/abalone-backend:latest`
+- Pull `augustinnaton/abalone-api:latest`
+- Start all services in detached mode
+
+The images were built locally and pushed to DockerHub, you do not need to build them yourself.
+
+### Accessing Services
+
+Once Docker Compose is running, access:
+
+| Service | URL | Description |
+|---------|-----|-------------|
+| Prefect UI | http://0.0.0.0:4200 | Monitor training workflows and deployments |
+| MLFlow UI | http://localhost:5002 | View experiments, metrics, and model registry |
+| API Docs | http://localhost:8001/docs | Interactive API documentation (Swagger) |
+| API Health | http://localhost:8001 | Health check endpoint |
+
+
+### Interacting with the app
+Once Docker Compose is running, you can connect to the various UIs to perform certain actions.
+
+From the [Prefect UI](http://0.0.0.0:4200), you can see the deployed workflows, and launch one manually to check everything works (go to ```Deployments``` --> ```abalone-training-daily``` --> ```Run``` (located on top right) --> ```Quick Run```). This triggers the training workflow to run, and you can see the outputs of this on the [MLFlow UI](http://localhost:5002).
+
+> **Note**: There is nothing to fetch new data in this app, so the retraining of the model is alwas performed on the same dataset that is in the Docker backend image. A next step could be to implement a way to retrieve new data and train the model on that data.
+
+You can also predict the age of an abalone from the [Fast API UI](http://localhost:5002). Click on the ```/predict``` endpoint and on the ```Try it out``` button. You can modify the request body of the API call, and visualize the results in the ```Responses``` section after clicking on the ```Execute``` button.
+
+### Stopping the app
+Simply run in your terminal:
 ```zsh
-docker run --rm -p 8001:8001 augustinnaton/abalone-age-prediction-tool
+docker compose down
 ```
