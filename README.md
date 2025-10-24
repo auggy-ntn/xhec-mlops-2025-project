@@ -378,3 +378,12 @@ To run the containerized API, follow these steps:
    docker run --rm -p 8001:8001 abalone-age-prediction-tool
   ```
 - Connect to the FastApi UI in your browser at http://localhost:8001
+
+Alternatively, you can simply pull the latest image from DockerHub:
+```zsh
+docker pull augustinnaton/abalone-age-prediction-tool
+```
+After this, simply run the image:
+```zsh
+docker run --rm -p 8001:8001 augustinnaton/abalone-age-prediction-tool
+```
