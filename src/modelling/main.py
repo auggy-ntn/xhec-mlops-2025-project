@@ -1,6 +1,7 @@
 # This module is the training flow: it reads the data, preprocesses it, trains a model and saves it.
 
 import argparse
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -33,8 +34,9 @@ def main(
     date = datetime.now().strftime("%Y-%m-%d")
     time = datetime.now().strftime("%H:%M:%S")
 
-    # Set MLflow tracking URI to src/mlruns directory
-    mlflow.set_tracking_uri("file:./src/mlruns")
+    # Set MLflow tracking URI - use environment variable if set, otherwise use default
+    tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "file:./src/mlruns")
+    mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment("Abalone Age Prediction Model Training")
 
     with mlflow.start_run() as run:
@@ -55,13 +57,15 @@ def main(
 
         # Preprocess data
         logger.info("Preprocessing data")
-        x, y, scaler = preprocess_data(df)
+        x, y, preprocessor = preprocess_data(df)
 
-        # (Optional) Pickle encoder if need be
-        logger.info("Saving scaler to src/web_service/local_objects/scaler.pkl")
-        save_to_pickle(scaler, "src/web_service/local_objects/scaler.pkl")
-        mlflow.sklearn.log_model(scaler, "scaler")
-        logger.info("Scaler logged to MLflow")
+        # Save preprocessor
+        logger.info(
+            "Saving preprocessor to src/web_service/local_objects/preprocessor.pkl"
+        )
+        save_to_pickle(preprocessor, "src/web_service/local_objects/preprocessor.pkl")
+        mlflow.sklearn.log_model(preprocessor, "preprocessor")
+        logger.info("Preprocessor logged to MLflow")
 
         # Train model
         logger.info("Training model")
@@ -105,5 +109,6 @@ if __name__ == "__main__":
         description="Train a model using the data at the given path."
     )
     parser.add_argument("trainset_path", type=str, help="Path to the training set")
+    parser.add_argument("stage", type=str, help="Stage to register the model under")
     args = parser.parse_args()
-    main(Path(args.trainset_path))
+    main(Path(args.trainset_path), args.stage)
