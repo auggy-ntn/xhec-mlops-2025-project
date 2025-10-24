@@ -5,7 +5,7 @@ uv run prefect server start --host 0.0.0.0 &
 
 # Wait for Prefect server to be ready (check if API is available)
 echo "Waiting for Prefect server to start..."
-sleep 10
+sleep 30
 echo "Prefect server is ready!"
 
 # Now start the deployment
