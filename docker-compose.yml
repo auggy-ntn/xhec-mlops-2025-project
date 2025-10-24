@@ -15,7 +15,7 @@ services:
         condition: service_completed_successfully
     ports:
       - "4200:4200"  # Prefect UI
-      - "5001:5000"  # MLflow UI
+      - "5002:5000"  # MLflow UI
     volumes:
       - mlruns:/app/mlruns
       - models:/app/models

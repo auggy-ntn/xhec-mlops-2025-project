@@ -17,7 +17,7 @@ echo "Backend services (Prefect and MLflow) are up and running."
 
 # URLs:
 echo "Prefect UI: http://localhost:4200"
-echo "MLflow UI: http://localhost:5000"
+echo "MLflow UI: http://localhost:5002"
 
 # Keep the container running by waiting for all background processes
 wait

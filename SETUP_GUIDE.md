@@ -3,11 +3,23 @@
 # 🚀 Complete Setup Guide
 ## Abalone Age Prediction MLOps Project
 
+[![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)]()
+[![Linting: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-informational?logo=pre-commit&logoColor=white)](https://github.com/artefactory/xhec-mlops-project-student/blob/main/.pre-commit-config.yaml)
+
 </div>
 
 This comprehensive guide covers the complete setup, structure, and deployment of the Abalone Age Prediction MLOps project.
 
 ---
+
+## 👥 Team Members
+
+- **Augustin Naton** - [@auggy-ntn](https://github.com/auggy-ntn)
+- **Louis Peretie** - [@PeretieLouis](https://github.com/PeretieLouis)
+- **Grégoire Bidault** - [@Gregoire-Bidault](https://github.com/gregoire-bidault)
+- **Gustave Triomphe** - [@gustave-triomphe](https://github.com/gustave-triomphe)
+- **Sofia Casalini** - [@sofiacasalini](https://github.com/sofiacasalini)
 
 ## 📋 Table of Contents
 
@@ -209,7 +221,7 @@ uv run uvicorn src.web_service.main:app --host 0.0.0.0 --port 8001 --reload
 | Service | URL | Purpose |
 |---------|-----|---------|
 | Prefect UI | http://0.0.0.0:4200 | Workflow orchestration, monitoring, scheduling |
-| MLFlow UI | http://localhost:5001 | Experiment tracking, model registry |
+| MLFlow UI | http://localhost:5002 | Experiment tracking, model registry |
 | FastAPI Docs | http://localhost:8001/docs | Interactive API documentation |
 | API Root | http://localhost:8001 | Health check endpoint |
 
@@ -257,7 +269,7 @@ Once Docker Compose is running, access:
 | Service | URL | Description |
 |---------|-----|-------------|
 | Prefect UI | http://0.0.0.0:4200 | Monitor training workflows and deployments |
-| MLFlow UI | http://localhost:5001 | View experiments, metrics, and model registry |
+| MLFlow UI | http://localhost:5002 | View experiments, metrics, and model registry |
 | API Docs | http://localhost:8001/docs | Interactive API documentation (Swagger) |
 | API Health | http://localhost:8001 | Health check endpoint |
 
@@ -265,11 +277,11 @@ Once Docker Compose is running, access:
 ### Interacting with the app
 Once Docker Compose is running, you can connect to the various UIs to perform certain actions.
 
-From the [Prefect UI](http://0.0.0.0:4200), you can see the deployed workflows, and launch one manually to check everything works (go to ```Deployments``` --> ```abalone-training-daily``` --> ```Run``` (located on top right) --> ```Quick Run```). This triggers the training workflow to run, and you can see the outputs of this on the [MLFlow UI](http://localhost:5001).
+From the [Prefect UI](http://0.0.0.0:4200), you can see the deployed workflows, and launch one manually to check everything works (go to ```Deployments``` --> ```abalone-training-daily``` --> ```Run``` (located on top right) --> ```Quick Run```). This triggers the training workflow to run, and you can see the outputs of this on the [MLFlow UI](http://localhost:5002).
 
 > **Note**: There is nothing to fetch new data in this app, so the retraining of the model is alwas performed on the same dataset that is in the Docker backend image. A next step could be to implement a way to retrieve new data and train the model on that data.
 
-You can also predict the age of an abalone from the [Fast API UI](http://localhost:5001). Click on the ```/predict``` endpoint and on the ```Try it out``` button. You can modify the request body of the API call, and visualize the results in the ```Responses``` section after clicking on the ```Execute``` button.
+You can also predict the age of an abalone from the [Fast API UI](http://localhost:5002). Click on the ```/predict``` endpoint and on the ```Try it out``` button. You can modify the request body of the API call, and visualize the results in the ```Responses``` section after clicking on the ```Execute``` button.
 
 ### Stopping the app
 Simply run in your terminal:
